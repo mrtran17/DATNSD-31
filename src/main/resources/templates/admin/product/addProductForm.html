@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm Sản Phẩm Mới</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/custom-sweetalert.css}">
+    <link rel="stylesheet" th:href="@{/css/add-product.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link th:href="@{/icons/sun.png}" rel="icon" type="image/png">
+</head>
+<body>
+<!-- Nhúng Sidebar -->
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+<!-- Nội dung chính -->
+<main>
+    <div class="container">
+        <h2>Thêm Sản Phẩm Mới</h2>
+
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+
+        <form th:action="@{/admin/products/add}" th:object="${sanPham}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="tenSanPham">Tên Sản Phẩm:</label>
+                <input type="text" id="tenSanPham" th:field="*{tenSanPham}" required>
+                <p th:if="${#fields.hasErrors('tenSanPham')}" th:errors="*{tenSanPham}" class="text-danger"></p>
+            </div>
+            <div class="form-group">
+                <label for="moTa">Mô Tả:</label>
+                <textarea id="moTa" th:field="*{moTa}"></textarea>
+            </div>
+
+            <!-- Container cho Danh Mục và Thương Hiệu -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="danhMuc">Danh Mục:</label>
+                    <select id="danhMuc" th:field="*{danhMuc.danhMucId}" required>
+                        <option value="">-- Chọn Danh Mục --</option>
+                        <option th:each="dm : ${danhMucList}" th:value="${dm.danhMucId}" th:text="${dm.tenDanhMuc}"></option>
+                    </select>
+                    <p th:if="${#fields.hasErrors('danhMuc.danhMucId')}" th:errors="*{danhMuc.danhMucId}" class="text-danger"></p>
+                </div>
+                <div class="form-group">
+                    <label for="thuongHieu">Thương Hiệu:</label>
+                    <select id="thuongHieu" th:field="*{thuongHieu.thuongHieuId}" required>
+                        <option value="">-- Chọn Thương Hiệu --</option>
+                        <option th:each="th : ${thuongHieuList}" th:value="${th.thuongHieuId}" th:text="${th.tenThuongHieu}"></option>
+                    </select>
+                    <p th:if="${#fields.hasErrors('thuongHieu.thuongHieuId')}" th:errors="*{thuongHieu.thuongHieuId}" class="text-danger"></p>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="chatLieu">Chất Liệu:</label>
+                    <select id="chatLieu" th:field="*{chatLieu.chatLieuId}" required>
+                        <option value="">-- Chọn Chất Liệu --</option>
+                        <option th:each="cl : ${chatLieuList}" th:value="${cl.chatLieuId}" th:text="${cl.tenChatLieu}"></option>
+                    </select>
+                    <p th:if="${#fields.hasErrors('chatLieu.chatLieuId')}" th:errors="*{chatLieu.chatLieuId}" class="text-danger"></p>
+                </div>
+                <div class="form-group">
+                    <label for="kieuDang">Kiểu Dáng:</label>
+                    <select id="kieuDang" th:field="*{kieuDang.kieuDangId}" required>
+                        <option value="">-- Chọn Kiểu Dáng --</option>
+                        <option th:each="kd : ${kieuDangList}" th:value="${kd.kieuDangId}" th:text="${kd.tenKieuDang}"></option>
+                    </select>
+                    <p th:if="${#fields.hasErrors('kieuDang.kieuDangId')}" th:errors="*{kieuDang.kieuDangId}" class="text-danger"></p>
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="trangThai">Trạng Thái:</label>
+                    <select id="trangThai" th:field="*{trangThai}">
+                        <option value="Hoạt động">Hoạt động</option>
+                        <option value="Không hoạt động">Không hoạt động</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="imageFiles">Hình Ảnh Sản Phẩm:</label>
+                    <input type="file" id="imageFiles" name="imageFiles" multiple>
+                    <small class="form-text text-muted">Chọn một hoặc nhiều hình ảnh cho sản phẩm (có thể chọn nhiều file).</small>
+                </div>
+            </div>
+
+            <button type="submit">Thêm Sản Phẩm</button>
+        </form>
+    </div>
+</main>
+
+<script th:src="@{/js/menu.js}"></script>
+<script th:src="@{/js/sweetalert.js}"></script>
+</body>
+</html>

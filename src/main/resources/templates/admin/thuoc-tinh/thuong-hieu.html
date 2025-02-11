@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Thương hiệu</title>
+    <link rel="stylesheet" href="/css/menu.css">
+    <link rel="stylesheet" href="/css/custom-sweetalert.css">
+    <link rel="stylesheet" href="/css/table.css"> <!-- Thêm link CSS cho table -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link th:href="@{/icons/sun.png}" rel="icon" type="image/png">
+    <style>
+        /* css/thuong-hieu.css */
+
+        /* Style cho form */
+        .thuong-hieu-form {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .thuong-hieu-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .thuong-hieu-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .thuong-hieu-form input[type="text"],
+        .thuong-hieu-form select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .thuong-hieu-form input[type="text"]:focus,
+        .thuong-hieu-form select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+        }
+
+        .thuong-hieu-form select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position-x: calc(100% - 10px);
+            background-position-y: 50%;
+            padding-right: 30px;
+        }
+
+        .thuong-hieu-form .invalid-feedback {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: block; /* Hiển thị invalid-feedback */
+        }
+
+        .thuong-hieu-form input[type="text"].is-invalid,
+        .thuong-hieu-form select.is-invalid {
+            border-color: #e74c3c;
+        }
+
+        .thuong-hieu-form .form-actions {
+            display: flex;
+            justify-content: flex-start; /* Căn nút về bên trái */
+            gap: 10px; /* Khoảng cách giữa các nút */
+            margin-top: 20px;
+        }
+
+        .thuong-hieu-form .submit-button,
+        .thuong-hieu-form .cancel-button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .thuong-hieu-form .submit-button:hover {
+            background-color: #2980b9;
+        }
+
+        .thuong-hieu-form .cancel-button {
+            background-color: #777;
+        }
+
+        .thuong-hieu-form .cancel-button:hover {
+            background-color: #555;
+        }
+
+        /* Style cho bảng */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            border-radius: 8px 8px 0 0;
+            overflow: hidden; /* Bo góc bảng */
+            margin-bottom: 20px;
+        }
+
+        .styled-table thead tr {
+            background-color: #3498db;
+            color: #ffffff;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .styled-table tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid #3498db;
+        }
+
+        .styled-table tbody tr.active-row {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .styled-table .action-buttons {
+            text-align: center; /* Căn giữa nút hành động */
+        }
+
+        .styled-table .edit-button,
+        .styled-table .delete-button {
+            display: inline-block;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none; /* Loại bỏ gạch chân mặc định của link */
+            color: white; /* Màu chữ trắng */
+            transition: background-color 0.3s ease;
+            font-size: 14px; /* Font size nhỏ hơn */
+        }
+
+        .styled-table .edit-button {
+            background-color: #ffc107; /* Màu vàng cho nút sửa */
+        }
+
+        .styled-table .edit-button:hover {
+            background-color: #e0a800; /* Màu vàng đậm hơn khi hover */
+        }
+
+        .styled-table .delete-button {
+            background-color: #e74c3c; /* Màu đỏ cho nút xóa */
+        }
+
+        .styled-table .delete-button:hover {
+            background-color: #c0392b; /* Màu đỏ đậm hơn khi hover */
+        }
+
+        /* Style cho alerts (giữ lại style cơ bản, tùy chỉnh thêm nếu cần) */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .close {
+            float: right;
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            opacity: .5;
+            text-decoration: none;
+        }
+
+        .close:hover, .close:focus {
+            color: #000;
+            text-decoration: none;
+            opacity: .75;
+        }
+    </style>
+</head>
+<body>
+<!-- Nhúng Sidebar -->
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<!-- Nội dung chính -->
+<main>
+    <div class="container">
+        <h2>Quản lý Thương hiệu</h2>
+
+        <div th:if="${successMessage}" class="alert-success alert alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div th:if="${errorMessage}" class="alert-danger alert alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+
+        <!-- Form Thêm/Sửa Thương Hiệu -->
+        <form th:action="${isEdit ? '/admin/thuong-hieu/update' : '/admin/thuong-hieu/add'}"
+              th:object="${thuongHieu}" method="post" class="thuong-hieu-form"> <!-- Thêm class cho form -->
+            <input type="hidden" th:field="*{thuongHieuId}" /> <!-- Hidden field cho ID khi edit -->
+            <div class="form-group">
+                <label for="tenThuongHieu">Tên Thương Hiệu:</label>
+                <input type="text" id="tenThuongHieu" th:field="*{tenThuongHieu}"
+                       th:classappend="${#fields.hasErrors('tenThuongHieu') ? 'is-invalid' : ''}">
+                <p class="invalid-feedback" th:if="${#fields.hasErrors('tenThuongHieu')}" th:errors="*{tenThuongHieu}"></p>
+            </div>
+            <div class="form-group">
+                <label for="trangThai">Trạng Thái:</label>
+                <select id="trangThai" th:field="*{trangThai}">
+                    <option value="Hoạt động">Hoạt động</option>
+                    <option value="Không hoạt động">Không hoạt động</option>
+                </select>
+            </div>
+            <div class="form-actions"> <!-- Container cho các nút form -->
+                <button type="submit" class="submit-button" th:text="${isEdit ? 'Cập nhật' : 'Thêm'}">Thêm</button>
+                <a th:href="@{/admin/thuong-hieu}" th:if="${isEdit}" class="cancel-button">Hủy</a>
+            </div>
+        </form>
+        <hr/>
+
+        <!-- Bảng hiển thị Thương Hiệu -->
+        <div class="table-responsive">
+            <table class="styled-table"> <!-- Thay thế class table bootstrap -->
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên Thương Hiệu</th>
+                    <th>Trạng Thái</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="thuongHieu : ${thuongHieuList}">
+                    <td th:text="${thuongHieu.thuongHieuId}"></td>
+                    <td th:text="${thuongHieu.tenThuongHieu}"></td>
+                    <td th:text="${thuongHieu.trangThai}"></td>
+                    <td class="action-buttons"> <!-- Container cho nút hành động -->
+                        <a th:href="@{/admin/thuong-hieu/edit/{id}(id=${thuongHieu.thuongHieuId})}" class="edit-button">Sửa</a>
+                        <a th:href="@{/admin/thuong-hieu/delete/{id}(id=${thuongHieu.thuongHieuId})}"
+                           class="delete-button"
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa thương hiệu này?')">Xóa</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<script src="/js/menu.js"></script>
+<script src="/js/sweetalert.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const successMessage = /*[[${successMessage}]]*/ '';
+    const errorMessage = /*[[${errorMessage}]]*/ '';
+
+    if (successMessage) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công!',
+            text: successMessage,
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+
+    if (errorMessage) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: errorMessage
+        });
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>

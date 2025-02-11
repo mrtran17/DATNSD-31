@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Ký Tài Khoản</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome CDN cho icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .register-container {
+            margin-top: 40px; /* Giảm margin top một chút so với login page */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 85vh; /* Tăng chiều cao container một chút */
+        }
+        .register-form {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.15);
+            animation: fadeIn 0.5s ease-in-out;
+            width: 480px; /* Tăng chiều rộng form đăng ký lớn hơn một chút */
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .form-group i {
+            position: absolute;
+            padding: 15px;
+            pointer-events: none;
+            color: #777;
+            font-size: 1.1rem;
+        }
+        .form-group input {
+            padding-left: 45px;
+            font-size: 1.1rem;
+            height: 48px;
+        }
+        .form-control::placeholder {
+            font-size: 1.1rem;
+            color: #aaa;
+        }
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+        }
+        .btn {
+            font-size: 1.1rem;
+            padding: 12px 25px;
+        }
+        .error-message {
+            animation: slideIn 0.3s ease-out;
+            font-size: 1.1rem;
+            padding: 15px;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .text-danger { /* Style cho thông báo lỗi Thymeleaf */
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+        .alert { /* Style chung cho alert message */
+            font-size: 1.1rem;
+            padding: 15px;
+            margin-bottom: 20px; /* Tăng khoảng cách dưới alert message */
+        }
+    </style>
+</head>
+<body>
+<div class="register-container">
+    <div class="register-form">
+        <h2 class="text-center mb-4">
+            <i class="fas fa-user-plus"></i> Đăng Ký Tài Khoản
+        </h2>
+        <div th:if="${message}" class="alert mt-3 text-center" th:classappend="${message.contains('thành công') ? 'alert-success' : 'alert-danger'}" role="alert">
+            <i class="fas" th:classappend="${message.contains('thành công') ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> <span th:utext="${message}"></span>
+        </div>
+        <form th:action="@{/register}" method="post" th:object="${khachHang}" class="needs-validation" novalidate>
+            <div class="form-group position-relative">
+                <i class="fas fa-user"></i>
+                <input type="text" class="form-control" id="ten" th:field="*{ten}" placeholder="Họ và Tên" required>
+                <div class="invalid-feedback">
+                    Vui lòng nhập họ và tên.
+                </div>
+                <div class="text-danger" th:if="${#fields.hasErrors('ten')}" th:errors="*{ten}"></div>
+            </div>
+            <div class="form-group position-relative mt-3"> <!-- Thêm margin-top để tạo khoảng cách -->
+                <i class="fas fa-envelope"></i>
+                <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Email" required>
+                <div class="invalid-feedback">
+                    Vui lòng nhập email hợp lệ.
+                </div>
+                <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            </div>
+            <div class="form-group position-relative mt-3">
+                <i class="fas fa-phone"></i>
+                <input type="text" class="form-control" id="soDienThoai" th:field="*{soDienThoai}" placeholder="Số Điện Thoại" required>
+                <div class="invalid-feedback">
+                    Vui lòng nhập số điện thoại hợp lệ.
+                </div>
+                <div class="text-danger" th:if="${#fields.hasErrors('soDienThoai')}" th:errors="*{soDienThoai}"></div>
+            </div>
+            <div class="form-group position-relative mt-3">
+                <i class="fas fa-lock"></i>
+                <input type="password" class="form-control" id="matKhau" th:field="*{matKhau}" placeholder="Mật Khẩu" required>
+                <div class="invalid-feedback">
+                    Vui lòng nhập mật khẩu.
+                </div>
+                <div class="text-danger" th:if="${#fields.hasErrors('matKhau')}" th:errors="*{matKhau}"></div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block mt-4"> <!-- Thêm margin-top cho nút đăng ký -->
+                <i class="fas fa-user-plus"></i> Đăng Ký
+            </button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="/login" class="text-decoration-none">
+                <i class="fas fa-sign-in-alt"></i> Đã có tài khoản? Đăng nhập
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS CDN -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Vô hiệu hóa submit form nếu có trường nào không hợp lệ (Bootstrap validation)
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+</body>
+</html>

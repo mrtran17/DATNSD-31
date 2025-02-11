@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sản phẩm</title>
+    <link rel="stylesheet" href="/css/menu.css">
+    <link rel="stylesheet" href="/css/custom-sweetalert.css">
+    <link rel="stylesheet" href="/css/table.css"> <!-- Thêm link CSS cho table -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link th:href="@{/icons/sun.png}" rel="icon" type="image/png"> <!-- Favicon -->
+    <style>
+        main {
+            padding: min(30px, 7%);
+            /* Loại bỏ grid layout cũ */
+            display: block; /* Hiển thị main block để chứa table */
+        }
+
+        .container {
+            /* Giữ nguyên các thuộc tính hiện tại */
+            border: 1px solid var(--line-clr);
+            border-radius: 1em;
+            margin-bottom: 0; /* Loại bỏ margin-bottom cũ */
+            padding: min(3em, 15%);
+        }
+
+        /* Responsive layout cho màn hình nhỏ */
+        @media (max-width: 800px) {
+            main {
+                padding: 2em 1em 60px 1em;
+                display: block; /* Vẫn là block trên màn hình nhỏ */
+            }
+            .container {
+                border: none;
+                padding: 0;
+            }
+        }
+        /* css/table.css */
+        .table-responsive {
+            overflow-x: auto; /* Tạo thanh cuộn ngang khi bảng quá rộng */
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse; /* Gộp viền các ô */
+            margin-bottom: 20px;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd; /* Viền cho các ô */
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2; /* Màu nền cho header */
+            font-weight: bold;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Màu nền cho dòng chẵn */
+        }
+    </style>
+
+</head>
+<body>
+<!-- Nhúng Sidebar -->
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<!-- Nội dung chính -->
+<main>
+    <div class="container">
+        <h2>Quản lý sản phẩm</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>Mã sản phẩm</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Chất liệu</th>
+                    <th>Thương hiệu</th>
+                    <th>Kiểu dáng</th>
+                    <th>Trạng thái</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="sanPham : ${productList}">
+                    <td th:text="${sanPham.maSanPham}"></td>
+                    <td th:text="${sanPham.tenSanPham}"></td>
+                    <td th:text="${sanPham.danhMuc != null ? sanPham.danhMuc.tenDanhMuc : ''}"></td>
+                    <td th:text="${sanPham.chatLieu != null ? sanPham.chatLieu.tenChatLieu : ''}"></td>
+                    <td th:text="${sanPham.thuongHieu != null ? sanPham.thuongHieu.tenThuongHieu : ''}"></td>
+                    <td th:text="${sanPham.kieuDang != null ? sanPham.kieuDang.tenKieuDang : ''}"></td>
+                    <td th:text="${sanPham.trangThai}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<script src="/js/menu.js"></script>
+<script src="/js/sweetalert.js"></script>
+
+</body>
+</html>
