@@ -69,7 +69,7 @@ public class KhachHangService {
         // Tạo mã khách hàng
         String maKhachHang = generateMaKhachHang();
         khachHang.setMaKhachHang(maKhachHang);
-        khachHang.setTrangThai(true);
+        khachHang.setTrangThai("Hoạt động");
 
         khachHangRepository.save(khachHang);
         return "Đăng ký thành công";

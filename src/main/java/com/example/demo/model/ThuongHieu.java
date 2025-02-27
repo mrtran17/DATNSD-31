@@ -2,28 +2,25 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
-@Table(name = "Thuong_Hieu")
+@Table(name = "thuong_hieu") // Tên bảng snake_case
 @Data
 public class ThuongHieu {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "thuong_hieu_id", columnDefinition = "uniqueidentifier")
-    private UUID thuongHieuId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Sử dụng IDENTITY cho auto-increment
+    @Column(name = "thuong_hieu_id")
+    private Integer thuongHieuId; // Sử dụng Integer, không phải UUID
 
-    @Column(name = "ten_thuong_hieu", nullable = false, length = 255, columnDefinition = "NVARCHAR(255)") // Thêm columnDefinition = "NVARCHAR(255)"
+    @Column(name = "ten_thuong_hieu", nullable = false, length = 255, columnDefinition = "NVARCHAR(255)")
     private String tenThuongHieu;
 
-    @Column(name = "trang_thai", length = 50, columnDefinition = "NVARCHAR(50)") // Thêm columnDefinition = "NVARCHAR(50)"
+    @Column(name = "trang_thai", nullable = false, columnDefinition = "NVARCHAR(255)") // Đặt nullable = false và columnDefinition = "NVARCHAR(255)"
     private String trangThai;
 
-    @OneToMany(mappedBy = "thuongHieu")
-    private List<SanPham> sanPhams;
+    @OneToMany(mappedBy = "thuongHieu") // Quan hệ 1-n với SanPham
+    private List<SanPham> sanPhams; // Danh sách sản phẩm thuộc thương hiệu
 }

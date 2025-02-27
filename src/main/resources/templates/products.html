@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head><title th:text="${pageTitle}">Trang Sản Phẩm</title> <!-- Set tiêu đề trang động --> </head>
+<body>
+<th:block layout:fragment="content"> <!-- Bắt đầu fragment "content" để ghi đè vào layout -->
+    <div class="mb-3"><h4>Trang Sản Phẩm</h4></div>
+    <div class="row">
+        <div class="col-12"><p>Đây là nội dung của trang sản phẩm. Bạn có thể thêm danh sách sản phẩm, form tìm kiếm,
+            hoặc bất kỳ nội dung nào bạn muốn hiển thị ở đây.</p> <!-- Ví dụ: Danh sách sản phẩm (bảng, card, ...) -->
+        </div>
+    </div>
+</th:block> <!-- Kết thúc fragment "content" --> </body>
+</html>

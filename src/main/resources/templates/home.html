@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Trang chủ</title>
 </head>
 <body>
 <h2 th:text="'Xin chào, ' + ${user.ten}"></h2>
-<a href="/logout">Đăng xuất</a>
+
+<!-- Thay đổi từ link <a> sang form POST để logout -->
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Đăng xuất</button>
+</form>
+
 </body>
 </html>

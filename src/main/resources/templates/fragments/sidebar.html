@@ -1,83 +1,55 @@
-<nav id="sidebar" th:fragment="sidebar">
-    <ul>
-        <li>
-<!--            <span th:with="taiKhoan=${#authentication.principal.getTaiKhoan()}"-->
-<!--                  th:text="${@taiKhoan.findByUsername(taiKhoan).ten}" class="logo"></span>-->
-            <button onclick="toggleSidebar()" id="toggle-btn">
-                <i class="fas fa-angle-double-left"></i>
-            </button>
-        </li>
-        <li th:class="${activePage == 'index' ? 'active' : ''}">
-            <a href="/admin/index">
-                <i class="fas fa-home"></i>
-                <span>Trang chủ</span>
-            </a>
-        </li>
-        <li th:class="${activePage == 'dashboard' ? 'active' : ''}">
-            <a href="/admin/dashboard">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Bảng điều khiển</span>
-            </a>
-        </li>
-
-        <li th:class="${activePage == 'products' ? 'active' : ''}">
-            <a href="/admin/products">
-                <i class="fas fa-box"></i>
-                <span>Quản lý sản phẩm</span>
-            </a>
-        </li>
-        <li>
-            <button onclick="toggleSubMenu(this)" class="dropdown-btn">
-                <i class="fas fa-headset"></i>  <!-- Icon cho Chăm sóc khách hàng -->
-                <span>Chăm sóc khách hàng</span>
-                <i class="fas fa-chevron-down dropdown-icon"></i>
-            </button>
-            <ul class="sub-menu">
-                <div>
-                    <li><a href="#"><i class="fas fa-envelope"></i> Email Marketing</a></li>  <!-- Icon cho Email Marketing -->
-                    <li><a href="#"><i class="fas fa-star"></i> Đánh giá của khách hàng</a></li>  <!-- Icon cho Đánh giá -->
-                    <li><a href="#"><i class="fas fa-exchange-alt"></i> Đổi trả sản phẩm</a></li>  <!-- Icon cho Đổi trả -->
-                </div>
-            </ul>
-        </li>
-        <li>
-            <button onclick="toggleSubMenu(this)" class="dropdown-btn">
-                <i class="fas fa-list"></i>  <!-- Icon chung cho Quản lý danh mục/thuộc tính -->
-                <span>Quản lý thuộc tính</span>
-                <i class="fas fa-chevron-down dropdown-icon"></i>
-            </button>
-            <ul class="sub-menu">
-                <div>
-                    <li th:class="${activePage == 'danhMuc' ? 'active' : ''}"><a href="/admin/danh-muc"><i class="fas fa-list"></i> Danh mục</a></li>
-                    <li th:class="${activePage == 'kichCo' ? 'active' : ''}"><a href="/admin/kich-co"><i class="fas fa-ruler"></i> Kích cỡ</a></li>
-                    <li th:class="${activePage == 'thuongHieu' ? 'active' : ''}"><a href="/admin/thuong-hieu"><i class="fas fa-shoe-prints"></i> Thương hiệu</a></li>
-                    <li th:class="${activePage == 'mauSac' ? 'active' : ''}"><a href="/admin/mau-sac"><i class="fas fa-palette"></i> Màu sắc</a></li>
-                    <li th:class="${activePage == 'chatLieu' ? 'active' : ''}"><a href="/admin/chat-lieu"><i class="fas fa-box-open"></i> Chất liệu</a></li>
-                    <li th:class="${activePage == 'kieuDang' ? 'active' : ''}"><a href="/admin/kieu-dang"><i class="fas fa-shapes"></i> Kiểu dáng</a></li>
-                </div>
-            </ul>
-        </li>
-        <li th:class="${activePage == 'calendar' ? 'active' : ''}">
-            <a href="/admin/calendar">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Lịch</span>
-            </a>
-        </li>
-        <li th:class="${activePage == 'profile' ? 'active' : ''}">
-            <a href="/admin/profile">
-                <i class="fas fa-user"></i>
-                <span>Hồ sơ</span>
-            </a>
-        </li>
-        <li>
-            <!-- Nút Đăng xuất -->
-            <form id="logout-form" th:action="@{/logout}" method="post" style="display: none;">
-                <!-- Form ẩn để gửi yêu cầu đăng xuất -->
-            </form>
-            <button type="button" class="logout-btn" onclick="confirmLogout()">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Đăng xuất</span>
-            </button>
-        </li>
-    </ul>
-</nav>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<aside id="sidebar" class="js-sidebar" th:fragment="sidebar">
+    <div class="h-100">
+        <div class="sidebar-logo"><a href="#">CodzSword</a></div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-header"> Admin Elements</li>
+            <li class="sidebar-item"><a th:href="@{/}" class="sidebar-link"> <i class="fa-solid fa-list pe-2"></i>
+                Dashboard </a></li>
+            <li class="sidebar-item"><a th:href="@{/products}" class="sidebar-link"> <i
+                    class="fa-solid fa-list pe-2"></i> Sản phẩm </a></li>
+            <li class="sidebar-item"><a href="#" class="sidebar-link collapsed" data-bs-target="#pages"
+                                        data-bs-toggle="collapse" aria-expanded="false"><i
+                    class="fa-solid fa-file-lines pe-2"></i> Pages </a>
+                <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a href="#" class="sidebar-link">Page 1</a></li>
+                    <li class="sidebar-item"><a href="#" class="sidebar-link">Page 2</a></li>
+                </ul>
+            </li>
+            <li class="sidebar-item"><a href="#" class="sidebar-link collapsed" data-bs-target="#posts"
+                                        data-bs-toggle="collapse" aria-expanded="false"><i
+                    class="fa-solid fa-sliders pe-2"></i> Posts </a>
+                <ul id="posts" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a href="#" class="sidebar-link">Post 1</a></li>
+                    <li class="sidebar-item"><a href="#" class="sidebar-link">Post 2</a></li>
+                    <li class="sidebar-item"><a href="#" class="sidebar-link">Post 3</a></li>
+                </ul>
+            </li>
+            <li class="sidebar-item"><a href="#" class="sidebar-link collapsed" data-bs-target="#auth"
+                                        data-bs-toggle="collapse" aria-expanded="false"><i
+                    class="fa-regular fa-user pe-2"></i> Auth </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a href="#" class="sidebar-link">Login</a></li>
+                    <li class="sidebar-item"><a href="#" class="sidebar-link">Register</a></li>
+                    <li class="sidebar-item"><a href="#" class="sidebar-link">Forgot Password</a></li>
+                </ul>
+            </li>
+            <li class="sidebar-header"> Multi Level Menu</li>
+            <li class="sidebar-item"><a href="#" class="sidebar-link collapsed" data-bs-target="#multi"
+                                        data-bs-toggle="collapse" aria-expanded="false"><i
+                    class="fa-solid fa-share-nodes pe-2"></i> Multi Dropdown </a>
+                <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a href="#" class="sidebar-link collapsed" data-bs-target="#level-1"
+                                                data-bs-toggle="collapse" aria-expanded="false">Level 1</a>
+                        <ul id="level-1" class="sidebar-dropdown list-unstyled collapse">
+                            <li class="sidebar-item"><a href="#" class="sidebar-link">Level 1.1</a></li>
+                            <li class="sidebar-item"><a href="#" class="sidebar-link">Level 1.2</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</aside>
+</html>

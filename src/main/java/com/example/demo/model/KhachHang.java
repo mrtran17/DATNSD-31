@@ -7,31 +7,30 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
 
 @Entity
-@Table(name = "khach_hang")
+@Table(name = "khach_hang") // Tên bảng snake_case
 @Data
 public class KhachHang {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "khach_hang_id", columnDefinition = "uniqueidentifier")
-    private UUID khachHangId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment của SQL Server
+    @Column(name = "khach_hang_id")
+    private Integer khachHangId; // Sử dụng Integer, không phải UUID
 
-    @Column(name = "ma_khach_hang")
+    @Column(name = "ma_khach_hang", unique = true) // Thêm unique = true
     private String maKhachHang;
 
-    @Column(name = "ten", columnDefinition = "nvarchar(255)") // Set type to nvarchar
+    @Column(name = "ten", columnDefinition = "nvarchar(255)")
     private String ten;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true) // Thêm unique = true
     private String email;
 
     @Column(name = "mat_khau")
     private String matKhau;
 
-    @Column(name = "so_dien_thoai")
+    @Column(name = "so_dien_thoai", unique = true) // Thêm unique = true
     private String soDienThoai;
 
-    @Column(name = "trang_thai")
-    private boolean trangThai; // Set type to boolean
+    @Column(name = "trang_thai", columnDefinition = "nvarchar(255)") // Giữ NVARCHAR cho đồng nhất
+    private String trangThai; // Thay đổi thành String để map với NVARCHAR
 
 }

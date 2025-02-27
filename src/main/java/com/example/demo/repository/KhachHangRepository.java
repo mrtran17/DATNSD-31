@@ -8,10 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface KhachHangRepository extends JpaRepository<KhachHang, UUID> {
+public interface KhachHangRepository extends JpaRepository<KhachHang, Integer> { // Thay đổi UUID thành Integer
     Optional<KhachHang> findByEmail(String email);
     boolean existsByEmail(String email);
     boolean existsBySoDienThoai(String soDienThoai);
     Optional<KhachHang> findFirstByOrderByMaKhachHangDesc();
-
 }
